@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Main extends GameApp {
     private ImageRegion toast;
     private ImageRegion cloud;
+    private ImageRegion moon;
     private Player player;
     private final List<Enemy> enemies = new ArrayList<>();
     private PlayerInput input;
@@ -24,9 +25,11 @@ public class Main extends GameApp {
     private double elapsedTime;
     private double spawnTimer;
 
-    private static final double cloudSpawn = 2.5;
+    private static final double cloudSpawn = 2;
     private static final double cloudBaseSpeed = 100;
     private static final double cloudIncrease = 5;
+    private static final int winningScore = 30;
+    private static final double MOON_SIZE = 150;
 
     @Override public void settings() { 
         size(550, 700);
@@ -36,6 +39,7 @@ public class Main extends GameApp {
     public void setup() {
         var toastSheet = loadImage("/assets/toast.png");
         var cloudSheet = loadImage("/assets/cloud.png");
+        moon = loadImageRegion("/assets/moon.png");
         toast = imageRegion(toastSheet, 0, 0, 456, 434);
         cloud = imageRegion(cloudSheet, 0, 0, 420, 200);
         input = new PlayerInput(this);
@@ -64,7 +68,11 @@ public class Main extends GameApp {
     }
 
     @Override public void update(double seconds){
-        if(won || lost) return;
+        if(lost) return;
+        if(won){
+            player.flyTo(width() / 2, 20 + MOON_SIZE / 2, seconds);
+            return;
+        }
         int direction = input.direction();
         double maxSpeed = 4;
         double accel = 18;
@@ -101,6 +109,13 @@ public class Main extends GameApp {
             }
             if(enemy.atBottom(height())){
                 iterator.remove();
+                points++;
+                score.setScore(points);
+                if(points >= winningScore){
+                    won = true;
+                    message.setText("You win! You reached the Moon!");
+                    return;
+                }
             }
         }
     }
@@ -110,6 +125,9 @@ public class Main extends GameApp {
         player.draw(this);
         for(Enemy enemy : enemies){
             enemy.draw(this);
+        }
+        if(won){
+            image(moon, (width() - MOON_SIZE) / 2, 20, MOON_SIZE, MOON_SIZE);
         }
     }
 

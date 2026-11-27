@@ -23,7 +23,14 @@ public class Enemy {
     }
 
     public boolean collidesWith(Player player){
-        return player.intersects(x, y, WIDTH, HEIGHT);
+        double horizontalInset = WIDTH * 0.15;
+        double verticalInset = HEIGHT * 0.2;
+        return player.intersects(
+            x + horizontalInset,
+            y + verticalInset,
+            WIDTH - horizontalInset * 2,
+            HEIGHT - verticalInset * 2
+        );
     }
 
     public void draw(GameApp game){
