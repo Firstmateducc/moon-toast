@@ -17,6 +17,6 @@ public class Player {
     }
 
     public void draw(GameApp game){
-        game.image(sprite, x, 450, 80, 64);
+        game.image(sprite, x, 500, 70, 64);
     }
 }

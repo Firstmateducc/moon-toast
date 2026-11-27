@@ -20,7 +20,7 @@ public class Main extends GameApp {
 
     public void setup() {
         var sheet = loadImage("/assets/toast.png");
-        toast = imageRegion(sheet, 0, 0, 456,434);
+        toast = imageRegion(sheet, 0, 0, 456, 434);
         input = new PlayerInput(this);
         restart();
         
@@ -28,22 +28,23 @@ public class Main extends GameApp {
 
     public void restart(){
         player = new Player(toast);
+        won = false;
     }
 
     @Override public void update(double seconds){
         int direction = input.direction();
         double maxSpeed = 3;
-        double accel = 0.45;
-        double deccel = 0.115;
+        double accel = 18;
+        double deccel = 8;
 
         if(direction != 0){
-            velocity += direction * accel;
+            velocity += direction * accel * seconds;
             velocity = Math.max(-maxSpeed, Math.min(maxSpeed, velocity));
         }else{
             if(velocity > 0){
-                velocity = Math.max(0, velocity - deccel);
+                velocity = Math.max(0, velocity - deccel * seconds);
             }else if(velocity < 0){
-                velocity = Math.min(0, velocity + deccel);
+                velocity = Math.min(0, velocity + deccel * seconds);
             }
         }
         player.update(velocity, seconds, width());
