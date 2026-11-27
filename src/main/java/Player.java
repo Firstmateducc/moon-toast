@@ -3,7 +3,7 @@ import zero.ImageRegion;
 
 
 public class Player {
-    private double x = 230;
+    private double x = 240;
     private final double speed = 100;
     private final ImageRegion sprite;
 
@@ -13,7 +13,7 @@ public class Player {
 
     public void update(double horizontal, double seconds, double canvasWidth){
         x += horizontal * speed * seconds;
-        x = Math.max(0, Math.min(x, canvasWidth - 80));
+        x = Math.max(5, Math.min(x, canvasWidth - 75));
     }
 
     public void draw(GameApp game){

@@ -3,7 +3,7 @@ import zero.ImageRegion;
 
 public class Enemy {
     private final int x;
-    private int y;
+    private int y = -50;
     private final int speed;
     private final ImageRegion sprite;
     
@@ -22,7 +22,7 @@ public class Enemy {
     }
 
     public void draw(GameApp game){
-        game.image(sprite, x, y, 20, 10);
+        game.image(sprite, x, y, 100, 50);
     }
 
 }
