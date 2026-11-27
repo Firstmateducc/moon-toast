@@ -26,9 +26,10 @@ public class Main extends GameApp {
     private double spawnTimer;
 
     private static final double cloudSpawn = 2;
+    private static final double cloudSpawnMinimum = 0.5;
     private static final double cloudBaseSpeed = 100;
     private static final double cloudIncrease = 5;
-    private static final int winningScore = 30;
+    private static final int winningScore = 50;
     private static final double MOON_SIZE = 150;
 
     @Override public void settings() { 
@@ -92,12 +93,16 @@ public class Main extends GameApp {
 
         elapsedTime += seconds;
         spawnTimer += seconds;
-        while(spawnTimer >= cloudSpawn){
+        double cloudSpeed = cloudBaseSpeed + elapsedTime * cloudIncrease;
+        double currentSpawnInterval = Math.max(
+            cloudSpawnMinimum,
+            cloudSpawn * cloudBaseSpeed / cloudSpeed
+        );
+        while(spawnTimer >= currentSpawnInterval){
             spawnCloud();
-            spawnTimer -= cloudSpawn;
+            spawnTimer -= currentSpawnInterval;
         }
 
-        double cloudSpeed = cloudBaseSpeed + elapsedTime * cloudIncrease;
         Iterator<Enemy> iterator = enemies.iterator();
         while(iterator.hasNext()){
             Enemy enemy = iterator.next();
